@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.GradeMapper">
+    <insert id="addGrade">
+        insert into grade(name)
+        values(#{name})
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select @@identity
+        </selectKey>
+    </insert>
+
+    <update id="updateGrade">
+        update student
+        set name=#{name}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteGrade">
+        delete from grade where id=#{xx}
+    </delete>
+
+    <select id="selectStudentByGrade" resultType="Student">
+        select * from student where gid=#{id}
+    </select>
+
+    <resultMap id="gradeMap" type="Grade">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="students" ofType="Student"
+                    select="selectStudentByGrade" column="id"/>
+    </resultMap>
+
+    <select id="findGradeById" resultMap="gradeMap">
+        select id,name from grade where id=#{id}
+    </select>
+
+    <select id="findAllGrade" resultMap="gradeMap">
+        select id,name from grade
+    </select>
+</mapper>
+

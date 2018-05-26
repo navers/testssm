@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.StudentMapper">
+    <insert id="addStudent">
+        insert into student(name,age,sex,gid,birthday)
+        values(#{name},#{age},#{sex},#{gid},#{birthday})
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select @@identity
+        </selectKey>
+    </insert>
+
+    <update id="updateStudent">
+        update student
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="age != null and age != 0">
+                age=#{age},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex=#{sex},
+            </if>
+            <if test="gid != null and gid != 0">
+                gid=#{gid},
+            </if>
+            <if test="birthday != null">
+                birthday=#{birthday}
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteStudent">
+        delete from student where id=#{xx}
+    </delete>
+    
+    <select id="selectGradeByStudent" resultType="Grade">
+        select * from grade where id=#{gid}
+    </select>
+
+    <resultMap id="studentMap" type="Student">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+        <result column="birthday" property="birthday"/>
+        <association property="grade" javaType="Grade"
+                     select="selectGradeByStudent" column="gid"/>
+    </resultMap>
+
+    <select id="findStudentById" resultMap="studentMap">
+        select id,name,age,sex,birthday,gid from student where id=#{id}
+    </select>
+
+    <select id="findLimitStudent" resultMap="studentMap">
+        select id,name,age,sex,birthday,gid from student limit #{0},#{1}
+    </select>
+
+    <select id="findTotal" resultType="Integer">
+        select count(*) from student
+    </select>
+</mapper>
+

@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="testssm:war exploded">
+    <output-path>E:/JAVA/tomcat/apache-tomcat-8.5.30/webapps/testssm</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="testssm/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="testssm" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
